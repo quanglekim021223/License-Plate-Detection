@@ -1,81 +1,68 @@
-# Dự án Nhận dạng Biển số xe
+# License Plate Recognition
 
-## Giới thiệu
-Dự án này là một hệ thống tự động phát hiện và nhận dạng biển số xe từ hình ảnh sử dụng các kỹ thuật xử lý ảnh và học sâu. Hệ thống có khả năng xác định vị trí biển số trong ảnh, tách các ký tự trên biển số, và nhận dạng chính xác các ký tự đó.
+This project recognizes license plate numbers from images using a combination of image processing techniques and Convolutional Neural Networks (CNNs).
 
-## Tính năng chính
-- Phát hiện vùng biển số xe trong ảnh
-- Xử lý và chuẩn hóa ảnh biển số
-- Tách các ký tự trên biển số
-- Nhận dạng các ký tự sử dụng mô hình CNN
+## Table of Contents
 
-## Yêu cầu hệ thống
-- Python 3.7+
-- OpenCV
-- TensorFlow 2.x
-- Keras
-- NumPy
-- Matplotlib
+- [Overview](#overview)
+- [Dataset](#dataset)
+- [Preprocessing](#preprocessing)
+- [Model Architecture](#model-architecture)
+- [Training](#training)
+- [Evaluation](#evaluation)
+- [Usage](#usage)
+- [Results](#results)
+- [Contributing](#contributing)
+- [License](#license)
 
-## Cài đặt
-1. Clone repository:
-   ```
-   git clone https://github.com/your-username/license-plate-recognition.git
-   cd license-plate-recognition
-   ```
+## Overview
 
-2. Cài đặt các thư viện cần thiết:
-   ```
-   pip install -r requirements.txt
-   ```
+The goal of this project is to accurately recognize license plate numbers from images. This involves several steps including license plate detection, character segmentation, and character recognition.
 
-3. Tải các file model pre-trained:
-   - WPOD-NET model cho phát hiện biển số: `wpod-net.json` và `wpod-net.h5`
-   - MobileNetV2 model cho nhận dạng ký tự: `License_character_recognition.h5`
+## Dataset
 
-   Đặt các file này vào thư mục `models/`.
+The dataset consists of images of vehicles with visible license plates. These images are annotated with the corresponding license plate numbers.
 
-## Sử dụng
-1. Đặt ảnh cần nhận dạng vào thư mục `input_images/`.
+## Preprocessing
+Images are first processed to detect and extract the license plate region.
+Techniques used include converting images to grayscale, applying Gaussian blur, and thresholding.
+The extracted license plate images are then segmented into individual characters.
+This involves applying morphological operations to highlight characters and segment them.
 
-2. Chạy script chính:
-   ```
-   python main.py
-   ```
+## Model Architecture
+The character recognition model consists of:
 
-3. Kết quả sẽ được lưu trong thư mục `output_results/`.
+3 Conv2D layers followed by MaxPooling2D and BatchNormalization layers for feature extraction.
+A Flatten layer to convert the 2D feature maps into a 1D vector.
+Dense layers for classification with dropout regularization to prevent overfitting.
 
-## Cấu trúc dự án
-```
-license-plate-recognition/
-│
-├── input_images/          # Thư mục chứa ảnh đầu vào
-├── output_results/        # Thư mục chứa kết quả
-├── models/                # Thư mục chứa các model pre-trained
-├── src/                   # Mã nguồn
-│   ├── detect_plate.py    # Module phát hiện biển số
-│   ├── segment_chars.py   # Module tách ký tự
-│   ├── recognize_chars.py # Module nhận dạng ký tự
-│   └── utils.py           # Các hàm tiện ích
-├── main.py                # Script chính
-├── requirements.txt       # File yêu cầu thư viện
-└── README.md              # File này
-```
+## Training
 
-## Kết quả
-- Độ chính xác phát hiện vùng biển số: 98%
-- Tỷ lệ nhận dạng đúng ký tự: 95%
-- Thời gian xử lý trung bình: 0.5 giây/ảnh
+Optimizer: Adam with a learning rate of 0.0001.
+Loss function: Sparse categorical cross-entropy for character recognition.
+Metrics: Accuracy for evaluating character recognition performance.
+Batch size: 32
+Number of epochs: 30
 
-## Đóng góp
-Mọi đóng góp đều được hoan nghênh. Vui lòng mở issue trước khi gửi pull request.
+## Evaluation
 
-## Giấy phép
-Dự án này được phân phối dưới giấy phép MIT. Xem file `LICENSE` để biết thêm chi tiết.
+The model is evaluated on a separate test set of license plate images. Performance is assessed based on the accuracy of recognized license plate numbers.
+## Usage
 
-## Liên hệ
-Nếu có bất kỳ câu hỏi nào, vui lòng liên hệ qua email: your.email@example.com
+To recognize license plate numbers from new images:
 
-## Lời cảm ơn
-- [WPOD-NET](https://github.com/quangnhat185/Plate_detect_and_recognize) cho mô hình phát hiện biển số
-- [MobileNetV2](https://github.com/tensorflow/models/tree/master/research/slim/nets/mobilenet) cho kiến trúc mô hình nhận dạng ký tự
+Preprocess the image to extract the license plate region.
+Segment the license plate image into individual characters.
+Load the trained character recognition model.
+Predict the characters using the model and construct the license plate number.
+
+## Results
+The model achieved ~95% accuracy after 5 times and at the end of training, it achieved ~95% accuracy on the validation set.
+
+## Contributing
+
+Feel free to submit issues or pull requests. Contributions are welcome!
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
